@@ -1,24 +1,13 @@
 function computerPlay() {
-  return Math.random() * (3 - 1) + 1;
+  return Math.floor(Math.random() * (4 - 1) + 1); //The maximum is exclusive and the minimum is inclusive
 }
 
-function playerPlay() {
-  let playerNum = 0;
-  let playerChoice = prompt("Please choose either rock, paper or scissors");
-  playerChoice = playerChoice.toUpperCase();
-  if (playerChoice == "ROCK") {
-    playerNum = 1;
-  } else if (playerChoice == "PAPER") {
-    playerNum = 2;
-  } else if (playerChoice == "SCISSORS") {
-    playerNum = 3;
-  }
-
-  return checkWinner(playerNum);
+function buttonClicked(id) {
+  displayResult(checkWinner(id));
 }
 
 function checkWinner(playerNum) {
-  let computerNum = computerPlay;
+  let computerNum = computerPlay();
   let result = computerNum-playerNum
 
   if (result == 0) {
@@ -30,12 +19,26 @@ function checkWinner(playerNum) {
   }
 }
 
-let result = playerPlay();
+const buttons = document.querySelectorAll('button');
 
-if (result == 0) {
-  console.log("It's a tie!");
-} else if (result == 1) {
-  console.log("You lost!");
-} else {
-  console.log("You won!");
+buttons.forEach((button) => {
+  button.addEventListener('click', () => {
+    let result = buttonClicked(button.id);
+  });
+});
+
+function displayResult(result) {
+  let resultDisplayContainer = document.querySelector('.result_display_container');
+  let resultDisplay = document.createElement('div');
+  resultDisplay.classList.add('result_display');
+
+  if (result == 0) {
+    resultDisplay.textContent = "It's a tie!";
+  } else if (result == 1) {
+    resultDisplay.textContent = "You lost!";
+  } else {
+    resultDisplay.textContent = "You won!";
+  }
+
+  resultDisplayContainer.appendChild(resultDisplay);
 }
